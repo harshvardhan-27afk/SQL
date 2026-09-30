@@ -22,21 +22,213 @@
 
 LEFT TABLE : RIGHT TABLE
 
-1) INNER JOIN :   middle part (matching rows from left and right table based on common column key)
+## 1) INNER JOIN :   middle part (matching rows from left and right table based on common column key)
 
 ```sql
 Task : Get all customers along with their orders but only for customers who have placed an order 
 
 SELECT *
 from CUSTOMERS as c
-JOIN
+INNER JOIN
 ORDERS as o
 ON c.cust_id = o.cust_id;
+
+IMP : Table order doesnt matter in case of INNER JOIN !!
+
+if the columns names are same between 2 tables they will be repeated in result table, therefore use alias !!
+
+
+```
+- use cases of INNER JOIN :
+
+1) Recombine data :  customers , address, orders, reviews, etc
+
+3) check for existence  of records from one table, whether they are present in other table or not !!
+
+
+------------------------------------------------------------------------------------------------------
+
+
+## 2) LEFT JOIN :
+
+- returns all the rows from the left table and matching rows from right table (key matching)
+
+- for all the rows in left table who have no matching records in right table, NULL will appear in columns of right table.
+
+- Primary source is Left table and right table is secondary source
+
+- the order of tables are imp, left one needs to be first and right one needs to be after join keyword
+
+```sql
+Task : Get all the customers along with their orders, including those without orders 
+
+SELECT 
+c.cust_id,
+o.order_id,
+c.name
+FROM customers as c
+LEFT JOIN orders as o
+ON c.cust_id = o.cust_id;
+
+```
+
+- use cases of LEFT JOIN :
+
+1) Recombine data :  customers , address, orders, reviews, etc
+
+2) Data Enrichment (getting extra info) : customers , zip code tables (look up tables)
+
+**LEFT + WHERE :**
+
+3) check for existence  of records from one table, whether they are present in other table or not !!
+
+
+---------------------------------------------------------------------------------------
+
+## 3) RIGHT JOIN :
+
+- returns all the rows from right table and matching rows from left
+
+- just switch the table order in LEFT JOIN u will get right join !!! 
+
+
+----------------------------------------------------------------------------------------
+
+## 4) Full join :
+
+- Returns all the rows from LEFT and RIGHT Table, nulls where no matching happend in common columns
+
+- order of the table not imp
+
+```sql
+Task : get all customers and all orders even if there is no match 
+
+SELECT *               --> u can include the cols u wanna show
+FROM customers
+FULL JOIN orders
+ON c.cust_id = o.cust_id;
+
+```
+
+- use cases of Full join :
+1) Recombine data :  customers , address, orders, reviews, etc
+
+- Full Join + WHERE
+
+3) check for existence  of records from one table, whether they are present in other table or not !!
+
+
+
+
+============================================================================================
+
+## Advanced joins :
+
+
+### 1) LEFT ANTI-JOIN : 
+
+![ant_j](./anti_join.png)
+
+```sql
+Task : Get all the customers who havent placed any order 
+
+SELECT *
+FROM customers as c
+LEFT JOIN orders as o
+ON c.sudt_id = o.cust_id
+WHERE o.cust_id IS NULL
+
+logic : when u club 2 tables, the not common from left have null in the right table column , so the common column has null as well, in WHERE e check if that right table common col key is null , we are selecting such rows, which are only present in LEFT TABLE !!
+
+```
+
+- use case of LEFT ANTI JOIN :
+
+3) check for existence of records from one table, whether they are present in other table or not !!
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+### 2) RIGHT ANTI-JOIN :
+
+- Return rows from right that has No match in Left
+
+- use the LEFT ANTI JOIN ONLY, just switch the order of tables 
+
+
+```sql
+Task : Get all the orders without matching customers
+
+SELECT *
+FROM customers as c
+RIGHT JOIN orders as o
+ON c.cust_id = o.cust_id
+WHERE c.cust_id IS NULL;
+
+
+---> solving the above task using LEFT ANTI JOIN
+
+SELECT * 
+FROM orders as o
+LEFT JOIN customers as c
+ON o.cust_id = c.cust_id
+WHERE c.cust_id IS NULL
 
 
 
 ```
 
+- use case of RIGHT ANTI JOIN are SAME as LEFT ANTI join
 
 
+--------------------------------------------------------------------------------------------------------------------
+
+
+### 3) FULL ANTI JOIN :
+
+- apart from common middle part of venn dig we want everything
+
+- Retruns only rows that dont match in either Table
+
+- opposite on inner join
+
+
+```sql
+Task : Find customers without order and orders without customers
+
+SELECT *
+FROM customers as c
+FULL JOIN orders as o
+ON c.cust_id = o.cust_id
+WHERE c.cust_id IS NULL OR o.cust_id IS NULL;
+
+same visualization logic as left join : form joined table and see what records u want where condition asks for nulls 
+
+
+```
+
+- use case of FULL ANTI JOIN :
+
+3) check for existence of records from one table, whether they are present in other table or not !!
+
+
+
+
+--------------------------------------------------------------------------------------------------
+
+#### challenge :
+
+
+```sql
+Task : GET all customers along with their orders , but only customers who have placed their order (dont use inner join)
+
+SELECT *
+FROM customers as c
+LEFT JOIN orders as o
+ON c.cust_id = o.cust_id
+WHERE o.cust_id IS NOT NULL;
+
+```
 
