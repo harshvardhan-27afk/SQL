@@ -163,13 +163,23 @@ HAVING AVG(score)>430;
 - Removes Duplicates
 - must be used immediately after SELECT
 
-- if there are multipe col names after DISTINCT , the unique combinations are  allowed to be shown, the duplication of unique combos are not shown 
+- **if there are multipe col names after DISTINCT , the unique combinations are  allowed to be shown, the duplication of unique combos are not shown**
+
+- 
 
 ```sql
-SELECT DISTINCT ...
+SELECT DISTINCT name , city, accessorie
 from ...
 where ....
 group by ... ,etc
+
+it means that :
+Asha Pune Laptop
+Asha Pune Phone
+Asha Delhi Laptop    
+Ben Pune phone
+
+all the 3 combos for asha would come, if it was just Distinct of name only 2 rows would appear, if it was Distinct name, city then only 3 rows would have appeared !!
 
 ```
 
@@ -210,6 +220,8 @@ ORDER BY scores ASC;
 
 ## SQL Definition Order
 
+```sql
+
 select    : filters columns to be shown
 distinct  : filters duplicates
 top       : filters result rows
@@ -220,7 +232,11 @@ group by
 having    : filters rows after aggregation
 order by
 
+```
+
 ## SQL Execution Order
+
+```sql
 
 from
 join
@@ -231,5 +247,23 @@ select
 distinct
 order by
 TOP/limit
+
+```
+
+## Aliases confusion ::
+
+- Generic sql rule is as follows :
+
+- we can defined aliases only in SELECT and FROM clauses  , the only thing that matters is, when referencing that alias in any clause we need to make sure that, that the clause in which we are referencing it must execute after the clause where the alias is defined !!
+
+```sql
+SELECT salary * 12 AS annual, annual / 12 AS monthly   -- error in standard SQL
+FROM employees;
+
+```
+
+- for CTES : 
+
+
 
 

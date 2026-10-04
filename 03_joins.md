@@ -2,7 +2,7 @@
 
 - There can be 2 ways in which u can join tables either u wanna combine columns (joins) or u wanna combine row (set Operators)
 
-![types](./join_types.png)
+![types](./images/join_types.png)
 
 
 ## Joins
@@ -127,7 +127,7 @@ ON c.cust_id = o.cust_id;
 
 ### 1) LEFT ANTI-JOIN : 
 
-![ant_j](./anti_join.png)
+![ant_j](./images/anti_join.png)
 
 ```sql
 Task : Get all the customers who havent placed any order 
@@ -231,4 +231,102 @@ ON c.cust_id = o.cust_id
 WHERE o.cust_id IS NOT NULL;
 
 ```
+
+
+-----------------------------------------------------------------------------------------------------------
+
+## CROSS JOIN (cartesian product) :
+
+- combine every row from left table to every row in right table, all combinations 
+
+- left table 2 rows : 3 rows in right table  , total rows = 6
+
+```sql
+syntax :
+SELECT *
+FROM A
+CROSS JOIN B
+
+no need to mention condition of matching and all, we dont care about matching and all, as we want all possible combos 
+
+Task : Generate all possible combos of cuasatomers and orders
+
+SELECT *
+from customers
+cross join orders;
+
+
+```
+
+
+#### USE THE BELOW DECISION TREE WHILE CHOOSING WHICH JOIN TO USE IN QUERY 
+
+
+![decison_tree](./images/decision_tree_for_joins.png)
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------
+
+## MULTI TABLE JOINS :
+
+- using left join, u can achieve matching and even not matching data cases using WHERE condition
+
+
+![ER_DIG](./images/ER.png)
+
+
+```sql
+
+IF THERE IS ONE MAIN / MASTER TABLE AND REST ARE ADDITIONAL INFO TABLES :
+
+SELECT *
+FROM A      --? master table
+LEFT JOIN B ON ..
+LEFT JOIN C ON ..
+LEFT JOIN D ON ..
+WHERE --> CONTROLS WHAT TO KEEP 
+
+IF ALL THE TABLES ARE EQUALLY IMP AND U WANT COMMON DATA :
+
+SELECT *
+FROM A
+INNER JOIN B ON ..
+INNER JOIN C ON ..
+
+TASK : RETRIEVE A LIST OF ALL ORDERS ALONG WITH THE RELATED CUSTOMERS, PRODUCTS, AND EMPLOYEE DETAILS
+       FOR EACH ORDER DISPLAY FOLLOWING COLUMNS 
+
+TABLES INVOLVED : ORDERS (MASTER), CUSTOMERS, PRODUCTS , EMPLOYEE DETAILS
+
+SELECT 
+    o.ORDERID,
+    o.SALES,
+    c.FIRSTNAME as cust_fname,
+    c.LASTNAME as cust_lname,
+    p.PRODUCT,
+    p.PRICE,
+    e.FIRSTNAME as sales_emp_fname,
+    e.LASTNAME as sales_emp_lname
+FROM ORDERS as o
+LEFT JOIN CUSTOMERS as c
+ON o.cust_id = c.cust_id
+LEFT JOIN PRODUCTS as p
+ON o.prod_id = p.prod_id
+LEFT JOIN EMPLOYEE as e
+ON o.sales_person_id = e.emp_id   --> then name of columns can be different in table, but their meaning is same 
+
+
+all the left joins in above are happening wrt to master table which is ORDERS , u can join with intermediate table as well , really depends on u though !!
+
+
+```
+
+
+u can join the tabels in any way u want, just think rationally !!!
+
+
+
 
