@@ -177,7 +177,3 @@ FROM ordersarchive;
 - lets say in migration project u move 1 table from db a to db b , to ensure all the enteries are present do a - b
 - here - means using EXCEPT
 - if the o/p is empty it means all the rows in a are in b 
-
-
-
--------------------------------------------------------------------------------------------------------- 

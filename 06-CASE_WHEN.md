@@ -144,3 +144,121 @@ group by customer_id;
 
 
 ```
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+### CASE STATEMENTS can be used in any of the clause below are few eg with each clause
+
+1) CASE WHEN in select (derieve a column)
+
+```sql
+SELECT name, salary,
+       CASE WHEN salary >= 100000 THEN 'High'
+            WHEN salary >= 50000  THEN 'Mid'
+            ELSE 'Low' END AS band
+FROM employees;
+
+the column: band will appear in o/p and string "hig , mid and low" will appear based on rows 
+
+```
+
+
+2) CASE WHEN in WHERE clause :
+
+```sql
+
+SELECT name, dept, salary
+FROM employees
+WHERE (salary > 
+    CASE WHEN dept = 'IT' THEN 70000 
+    ELSE 50000 
+END);
+
+Here the query will return all the rows where if the dept of person is IT then his salary must be greater than 70000 , else if the person is from other dept then even at 50000 > he can be shown in o/p
+
+```
+
+
+3) CASE WHEN IN ORDER BY clause :
+
+```sql
+SELECT name, rating
+FROM employees
+ORDER BY CASE rating WHEN 'A' THEN 1 WHEN 'B' THEN 2 ELSE 3 END, name;
+
+the rows appearing for name, rating from employees will be ordered by the conditional we genrate and then by name, nested order bying
+
+```
+
+
+
+4) CASE WHEN in GROUP BY :
+
+
+```sql
+SELECT CASE WHEN age < 30 THEN 'Young'
+            WHEN age < 50 THEN 'Mid-age'
+            ELSE 'Senior' END AS age_group,
+       COUNT(*) AS cnt
+FROM employees
+GROUP BY CASE WHEN age < 30 THEN 'Young'
+              WHEN age < 50 THEN 'Mid-age'
+              ELSE 'Senior' END;
+
+In group by the same case when as select is usually used as in execution order GROUP BY executes before SELECT therefore cant use the alias directly in GROUP BY 
+
+
+```
+
+
+5) CASE WHEN IN HAVING :
+
+```sql
+
+SELECT dept, SUM(salary) AS total
+FROM employees
+GROUP BY dept
+HAVING SUM(salary) > CASE WHEN dept = 'IT' THEN 200000 ELSE 100000 END;
+
+```
+
+
+
+6) CASE WHEN INSIDE AGGREGATES :
+
+```sql
+SELECT dept,
+       SUM(CASE WHEN gender = 'F' THEN 1 ELSE 0 END) AS female_cnt,
+       SUM(CASE WHEN gender = 'M' THEN 1 ELSE 0 END) AS male_cnt
+FROM employees
+GROUP BY dept;
+
+```
+
+
+7) CASE WHEN INSIDE WINDOW FUNCTION :
+
+```sql
+
+SELECT name, dept, salary,
+       SUM(CASE WHEN rating = 'A' THEN salary ELSE 0 END)
+           OVER (PARTITION BY dept) AS dept_A_payroll
+FROM employees
+ORDER BY dept, name;
+
+```
+
+
+8) CASE WHEN IN UPDATE STATEMENTS :
+
+```sql
+UPDATE employees
+SET salary = CASE rating
+                 WHEN 'A' THEN salary * 1.15
+                 WHEN 'B' THEN salary * 1.10
+                 ELSE salary * 1.03
+             END;
+
+```
