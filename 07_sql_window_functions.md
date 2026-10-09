@@ -32,7 +32,7 @@ SELECT
     SUM(sales) OVER(PARTITION BY ProductId) as TotalSalesByProduct
 From Orders;
 
-partition by is just a way to tell group by what in window functions !!!!
+partition by is just a way to tell " group by what " in window functions !!!!
 
 ```
 
