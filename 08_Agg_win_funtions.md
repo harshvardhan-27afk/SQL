@@ -161,6 +161,31 @@ Rolling : Aggregate all values within a fixed window (eg. 30 days)
 
 same as above just perform avg , decide what kind of window u want and also the frame and all
 
+```sql
+Task : calculate the moving AVG of sales for each product over time 
+therefore need to sort data wrt time
+
+SELECT 
+orderId,
+ProductId,
+OrderDate,
+sales,
+AVG(sales) OVER (PARTITION BY ProductId Order By OrderDate) as Moving_avg
+from orders;
+
+the calculations will be done for every window
+
+```
+
+### So in nutshell :
+
+- Window Agg functions like sum, avg, min, max , count helps us to :
+  - Overall total 
+  - total per groups
+  - running total
+  - rolling total
 
 
+## Summary in nutshell :
 
+![win_final](./images/win_final.png)
