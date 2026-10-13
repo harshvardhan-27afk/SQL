@@ -321,6 +321,10 @@ ON o.sales_person_id = e.emp_id   --> then name of columns can be different in t
 
 all the left joins in above are happening wrt to master table which is ORDERS , u can join with intermediate table as well , really depends on u though !!
 
+when joining multiple table 4-5 and so on the subsequent joins happens on the intermeddiate join tables being generated  !!
+
+Be careful when joining multiple tables , M:N explosion and all 
+
 
 ```
 
